@@ -19,7 +19,7 @@ spec:
         spec:
           containers:
           - name: etcd-maintainer
-            image: ugurozturk99/etcdctl:v0.0.23
+            image: ugurozturk99/etcdctl:v0.0.24
             command: ["/app/script.sh"]
             env:
               - name: PROMETHEUSSVC
