@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: etcd-maintanence
+  namespace: default
+spec:
+  # every day at 4 am 
+  schedule: "0 4 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      # 6 hours ttl to troubleshoot any potential problems
+      ttlSecondsAfterFinished: 3600
+      parallelism: 1
+      backoffLimit: 1
+      template:
+        spec:
+          containers:
+          - name: etcd-maintainer
+            image: ugurozturk99/etcdctl:v0.0.23
+            command: ["/app/script.sh"]
+            env:
+              - name: PROMETHEUSSVC
+                value: "prometheus-service"
+              - name: PROMETHEUSNS
+                value: "namespace"
+            volumeMounts:
+            - mountPath: /etc/secret-volume
+              name: secret-volume
+          volumes:
+          - name: secret-volume
+            secret:
+              defaultMode: 420
+              secretName: etcd-certs
+          serviceAccount: etcd-maintainer
+          restartPolicy: Never

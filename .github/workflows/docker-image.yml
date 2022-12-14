@@ -1,0 +1,31 @@
+name: Docker Build
+
+on:
+  push:
+    branches: [ "main" ]
+
+
+jobs:
+
+  build:
+    name: Build docker image and push this image to docker.io container registry
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check Out Source Code
+      uses: actions/checkout@v2
+    - name: Set variables
+      run: |
+        VER=$(cat src/env | awk {'print$2'})
+        echo $VER
+        echo "VERSION=$VER" >> $GITHUB_ENV
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+    - name: Login to DockerHub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Build for lb-exporter-deployment
+      run: |
+        cd src && docker build -t ugurozturk99/etcdctl:v${{ env.VERSION }} -f Dockerfile .
+        docker tag ugurozturk99/etcdctl:v${{ env.VERSION }} ugurozturk99/etcdctl:latest
