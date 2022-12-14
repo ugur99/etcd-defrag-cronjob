@@ -1,4 +1,5 @@
 # etcd defragmantation cronjob
+[![Docker Build](https://github.com/ugur99/etcd-defrag-cronjob/actions/workflows/docker-image.yml/badge.svg?branch=main)](https://github.com/ugur99/etcd-defrag-cronjob/actions/workflows/docker-image.yml)
 
 This is a simple cronjob checks whether the [etcdDatabaseHighFragmentationRatio](https://github.com/etcd-io/etcd/blob/6d27a42b7d6191da43d27930282de5b9e54ead7c/contrib/mixin/mixin.libsonnet#L242-L253) alert is active for the cluster or not; if it is active, then it runs `etcdctl defrag` command for each etcd instances starting from the ones that are not leader.
 
