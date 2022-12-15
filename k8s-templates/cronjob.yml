@@ -29,6 +29,7 @@ spec:
             volumeMounts:
             - mountPath: /etc/secret-volume
               name: secret-volume
+              readOnly: true
           volumes:
           - name: secret-volume
             secret:
