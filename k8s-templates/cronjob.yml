@@ -19,8 +19,8 @@ spec:
         spec:
           containers:
           - name: etcd-maintainer
-            image: ugurozturk99/etcdctl:v0.0.24
-            command: ["/app/script.sh"]
+            image: ugurozturk99/etcdctl:v0.0.27-SNAPSHOT
+            command: ["etcdctldefrag"]
             env:
               - name: PROMETHEUSSVC
                 value: "prometheus-service"
